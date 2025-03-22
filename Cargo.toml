@@ -1,0 +1,18 @@
+[package]
+name = "csv-reader"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "csv_reader"
+crate-type = ["cdylib"]
+
+[dependencies]
+csv = "1.2"
+pyo3 = { version = "0.19", features = ["extension-module"] }
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+
