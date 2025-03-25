@@ -44,14 +44,14 @@ impl FastCSVParser {
     }
 
     // Read the CSV file and return batches of rows as Python objects
-    // This is optimized for performance with batch processing
     fn read(&self, py: Python) -> PyResult<Vec<PyObject>> {
         // Fast path: read entire file into memory for large files
         if self.file_size > 0 && self.file_size < 100 * 1024 * 1024 {
-            // Under 100MB
-            return self.read_optimized(py);
+            // check if under 100 MB 1024 as kb
+            return self.read_optimized(py); // Will read whole file to memory first
         }
 
+        // Write with chunking for larger files
         let path = Path::new(&self.filename);
         let file = match File::open(path) {
             Ok(f) => BufReader::with_capacity(BUF_SIZE, f),
@@ -105,7 +105,7 @@ impl FastCSVParser {
             // Efficient field extraction
             for (i, field) in record.iter().enumerate() {
                 if i < headers.len() {
-                    let header = headers.get(i).unwrap_or("Unknown");
+                    let header = headers.get(i).unwrap_or("None");
                     // Direct set without unnecessary conversions
                     row.set_item(header, field)?;
                 }
@@ -183,7 +183,12 @@ impl FastCSVParser {
 
         // Pre-allocate results
         let estimated_rows = content.len() / 50; // Rough estimate of rows based on byte size
-        let estimated_batches = (estimated_rows / self.batch_size) + 1;
+                                                 // heuristic value as count as
+                                                 // A few numeric fields (4-8 bytes each)
+                                                 // A few short text fields (10-20 bytes each)
+                                                 // Commas between fields (1 byte each)
+                                                 // A newline character (1-2 bytes)
+        let estimated_batches = (estimated_rows / self.batch_size) + 1; // + 1 is for the remainder batch if any
         let mut batches: Vec<PyObject> = Vec::with_capacity(estimated_batches);
 
         // Process in batches
@@ -209,7 +214,7 @@ impl FastCSVParser {
             // Process all fields
             for (i, field) in record.iter().enumerate() {
                 if i < headers.len() {
-                    let header = headers.get(i).unwrap_or("Unknown");
+                    let header = headers.get(i).unwrap_or("None");
                     row.set_item(header, field)?;
                 }
             }
@@ -327,7 +332,7 @@ impl FastCSVParser {
 
                 for (i, field) in record.iter().enumerate() {
                     if i < headers.len() {
-                        let header = headers.get(i).unwrap_or("Unknown");
+                        let header = headers.get(i).unwrap_or("None");
                         row.set_item(header, field)?;
                     }
                 }
@@ -483,7 +488,7 @@ impl FastCSVParser {
 
                             for (i, field) in record.iter().enumerate() {
                                 if i < headers.len() {
-                                    let header = headers.get(i).unwrap_or("Unknown");
+                                    let header = headers.get(i).unwrap_or("None");
                                     row.set_item(header, field)?;
                                 }
                             }
@@ -546,7 +551,7 @@ impl FastCSVParser {
 
                     for (i, field) in record.iter().enumerate() {
                         if i < headers.len() {
-                            let header = headers.get(i).unwrap_or("Unknown");
+                            let header = headers.get(i).unwrap_or("None");
                             row.set_item(header, field)?;
                         }
                     }
@@ -698,4 +703,3 @@ fn csv_reader(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<FastCSVParser>()?;
     Ok(())
 }
-
