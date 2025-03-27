@@ -42,14 +42,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "csv-reader"
-version = "0.1.0"
-dependencies = [
- "csv",
- "pyo3",
-]
-
-[[package]]
 name = "indoc"
 version = "1.0.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -206,6 +198,14 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0b8c0c260b63a8219631167be35e6a988e9554dbd323f8bd08439c8ed1302bd1"
 dependencies = [
  "bitflags",
+]
+
+[[package]]
+name = "rs-csv-reader"
+version = "0.1.0"
+dependencies = [
+ "csv",
+ "pyo3",
 ]
 
 [[package]]

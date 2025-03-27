@@ -12,9 +12,9 @@ A Optimization performance CSV parsing library written in Rust with Python bindi
 ## Installation
 
 ```bash
-pip install csv-reader
+pip install csv_reader
 # Or if you're using UV
-uv pip install csv-reader
+uv pip install csv_reader
 ```
 
 ## Usage
