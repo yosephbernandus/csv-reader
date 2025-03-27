@@ -12,9 +12,9 @@ A Optimization performance CSV parsing library written in Rust with Python bindi
 ## Installation
 
 ```bash
-pip install csv_reader
+pip install rs-csv-reader
 # Or if you're using UV
-uv pip install csv_reader
+uv pip install rs-csv-reader
 ```
 
 ## Usage
@@ -104,7 +104,7 @@ cd csv-reader
 maturin build --release
 
 # Install the built wheel
-pip install target/wheels/csv_reader-*.whl
+pip install target/wheels/rs_csv_reader-*.whl
 ```
 
 You can also use development mode for a faster workflow during development:
