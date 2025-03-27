@@ -9,7 +9,7 @@ use std::path::Path;
 const BUF_SIZE: usize = 64 * 1024; // 64KB buffer
 
 #[pyclass]
-struct FastCSVParser {
+struct CSVParser {
     filename: String,
     batch_size: usize,
     #[pyo3(get)]
@@ -18,7 +18,7 @@ struct FastCSVParser {
 }
 
 #[pymethods]
-impl FastCSVParser {
+impl CSVParser {
     #[new]
     fn new(filename: String, batch_size: usize, has_headers: Option<bool>) -> PyResult<Self> {
         // Get file size during initialization to avoid reopening for size check
@@ -35,7 +35,7 @@ impl FastCSVParser {
             }
         };
 
-        Ok(FastCSVParser {
+        Ok(CSVParser {
             filename,
             batch_size,
             has_headers: has_headers.unwrap_or(true),
@@ -700,6 +700,6 @@ impl FastCSVParser {
 
 #[pymodule]
 fn csv_reader(_py: Python, m: &PyModule) -> PyResult<()> {
-    m.add_class::<FastCSVParser>()?;
+    m.add_class::<CSVParser>()?;
     Ok(())
 }
