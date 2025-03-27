@@ -136,3 +136,8 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 - The Rust CSV crate for providing the underlying parsing engine
 - PyO3 for making Rust-Python bindings seamless
+
+
+## Profiling Tools
+For doing a testing, this the tools for test the CSV reader **https://github.com/yosephbernandus/csv_reader_profiling**
+
